@@ -1,5 +1,5 @@
 var DiceRoller = new DiceRoller(),
-    arrIntegerDieTypes = [2,3,6,10]
+    arrIntegerDieTypes = [1,2,3,6,10]
 ;
 module("integer dice");
 function testRollIntegerDieType(intDieType) {
@@ -9,6 +9,7 @@ function testRollIntegerDieType(intDieType) {
         intRoll = DiceRoller.roll('1d' + intDieType)[0];
         if (intRoll < 1 || intRoll > intDieType) {
             blnFail = true;
+            break;
         }
     }
     return blnFail;
@@ -20,6 +21,7 @@ function testRollMultipleIntegerDieType(intMultiple, intDieType) {
         intRoll = DiceRoller.roll(intMultiple + 'd' + intDieType)[0];
         if (intRoll < intMultiple || intRoll > (intMultiple * intDieType)) {
             blnFail = true;
+            break;
         }
     }
     return blnFail;
@@ -53,16 +55,32 @@ test(
 
 module("complex dice");
 test(
-        "1dSIXSIX",
-        function() {
-            'use strict';
-            var i = 0, intRoll = 0, blnFail = false;
-            for (i = 0; i < 100; i = i + 1) {
-                intRoll = String(DiceRoller.roll('1dSIXSIX')[0]);
-                if (!String(intRoll).match(/^[1-6][1-6]$/)) {
-                    blnFail = true;
-                }
+    "1dSIXSIX",
+    function() {
+        'use strict';
+        var i = 0, intRoll = 0, blnFail = false;
+        for (i = 0; i < 100; i = i + 1) {
+            intRoll = String(DiceRoller.roll('1dSIXSIX')[0]);
+            if (!String(intRoll).match(/^[1-6][1-6]$/)) {
+                blnFail = true;
+                break;
             }
-            strictEqual(blnFail, false, "1dSIXSIX");
         }
-    );
+        strictEqual(blnFail, false, "1dSIXSIX");
+    }
+);
+test(
+    "1dWOD",
+    function() {
+        'use strict';
+        var i = 0, intRoll = 0, blnFail = false;
+        for (i = 0; i < 100; i = i + 1) {
+            intRoll = DiceRoller.roll('1dWOD')[0];
+            if (intRoll !== 1 && intRoll !== 0) {
+                blnFail = true;
+                break;
+            }
+        }
+        strictEqual(blnFail, false, "1dWOD");
+    }
+);

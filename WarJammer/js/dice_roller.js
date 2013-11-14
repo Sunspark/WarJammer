@@ -51,6 +51,7 @@ function DiceRoller() {
             throw new Error ('Integer passed to rollIntegerDie (' + intSides + ') was not a positive integer.');
         }
         
+        // if the users ask for roll a d1, unless it becomes a performance bottle-neck, I don't care.
         return Math.floor((Math.random()*intSides)+1);
     }
     
@@ -77,6 +78,14 @@ function DiceRoller() {
         
         return this['rollSixSix']();
         */
+        switch (strComplexType) {
+        case 'SIXSIX':
+            return rollSixSix();
+        case 'WOD':
+            return rollWOD();
+        default:
+            throw new Error ('unknown complex type in switch statement.');
+        }
     }
     
     /**
