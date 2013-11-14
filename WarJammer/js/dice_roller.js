@@ -69,10 +69,14 @@ function DiceRoller() {
         // http://stackoverflow.com/questions/7763549/passing-function-name-as-a-parameter-to-another-function
         // http://stackoverflow.com/questions/359788/how-to-execute-a-javascript-function-when-i-have-its-name-as-a-string
         
+        /*
+        // If anyone can figure out how to do this, so that I can junk this massive switch statement,
+        // please let me know!!
         alert(objComplexTypes[strComplexType]);
         var fish = objComplexTypes[strComplexType];
         
         return this['rollSixSix']();
+        */
     }
     
     /**
