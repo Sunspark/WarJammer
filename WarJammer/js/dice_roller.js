@@ -115,47 +115,70 @@ function DiceRoller() {
      * takes a string in form 'xdy', rolls them and adds them up. 
      * Result is element 0 of array, optional additional elements are the individual rolls.
      * 
-     * @param {string} strDiceToRoll - in the format 'xdy' where 'x' is the number of dice to roll (integer), and 'y' is the number of 'sides' on the dice (integer, or string for specials). eg '2d6'
+     * @param {string} strDiceToRoll - optional, default '1d6'. In the format 'xdy+z' where 'x' is the number of dice to roll (integer), and 'y' is the number of 'sides' on the dice (integer, or string for specials), and 'z' is an optional number to add to the end of the roll eg '2d6+1'
      * @param {string} blnShowIndividualRolls - optional, default false. True to return the results of the individual dice in the return array elements above 0.
      * @return {array} arrDiceResults - element 0 contains the sum total of the dice. Additional elements contain the individual die rolls.
      * @throws Error If incoming string does not follow format
      * @throws Error If second half of string is not recognisable to roll
      */
     this.roll = function(strDiceToRoll, blnShowIndividualRolls) {
-        var arrReturn = [], arrReturnTemp = [], arrStringParseResults, intNumberToRoll, strTypeToRoll, i = 0, j = 0, k = 0;
+        var
+            arrReturn = [],
+            arrReturnTemp = [],
+            arrStringParseResults,
+            intNumberToRoll,
+            strTypeToRoll,
+            i = 0,
+            j = 0,
+            k = 0,
+            intAddToTotal = 0
+            ;
+        
         // set defaults
+        if (typeof strDiceToRoll === 'undefined') {
+            strDiceToRoll = '1d6';
+        }
         if (typeof blnShowIndividualRolls === 'undefined') {
             blnShowIndividualRolls = false;
         }
-
-        if (!strDiceToRoll.match(/^\d+d.*$/)) {
-            throw new Error ('String passed to roll (' + strDiceToRoll + ') did not follow format - (integer)d(something).');
-        }
-        arrStringParseResults = strDiceToRoll.match(/^(\d+)d(.*)$/);
-        intNumberToRoll = arrStringParseResults[1];
-        strTypeToRoll = arrStringParseResults[2];
         
-        if (strTypeToRoll.match(/^\d+$/)) {
-            // it's an integer
-            for (i = 0; i < intNumberToRoll; i = i + 1) {
-                arrReturnTemp.push(rollIntegerDie(strTypeToRoll));
+        if (strDiceToRoll.match(/^\d+d(?:[0-9]+(?:\+\d+)?)$/) !== null) {
+            // matches an integer (+x)
+            
+            arrStringParseResults = strDiceToRoll.match(/^(\d+)d([0-9]+)\+?(\d+)?$/);
+            intNumberToRoll = parseInt(arrStringParseResults[1], 10);
+            strTypeToRoll = arrStringParseResults[2];
+            if (typeof arrStringParseResults[3] !== 'undefined') {
+                intAddToTotal = parseInt(arrStringParseResults[3], 10);
             }
-        } else if (isValidComplexType(strTypeToRoll)) {
-            // it's a complex type
-            for (j = 0; j < intNumberToRoll; j = j + 1) {
-                arrReturnTemp.push(rollComplexDie(strTypeToRoll));
+            for (i = 0; i < intNumberToRoll; i = i + 1) {
+                arrReturnTemp.push(rollIntegerDie(parseInt(strTypeToRoll, 10)));
+            }
+        } else if (strDiceToRoll.match(/^\d+d(?:[A-Z0-9]+)$/) !== null) {
+            // matches a complex type
+            arrStringParseResults = strDiceToRoll.match(/^(\d+)d([A-Z0-9]+)$/);
+            intNumberToRoll = parseInt(arrStringParseResults[1], 10);
+            strTypeToRoll = arrStringParseResults[2];
+            if (isValidComplexType(strTypeToRoll)) {
+                // it's a complex type
+                for (j = 0; j < intNumberToRoll; j = j + 1) {
+                    arrReturnTemp.push(rollComplexDie(strTypeToRoll));
+                }
+            } else {
+                throw new Error ('Type of die requested to roll (' + strTypeToRoll + ') was not valid. Must be one of the complex types or an integer.');
             }
         } else {
-            throw new Error ('Type of die requested to roll (' + strTypeToRoll + ') was not valid. Must be one of the complex types or an integer.');
+            throw new Error ('String passed to roll (' + strDiceToRoll + ') did not follow format - (integer)d(something)[+(integer)].');
         }
         
         arrReturn[0] = 0;
         for (k = 0; k < arrReturnTemp.length; k = k + 1) {
-            arrReturn[0] += arrReturnTemp[k];
+            arrReturn[0] = parseInt(arrReturn[0], 10) + parseInt(arrReturnTemp[k], 10);
             if (blnShowIndividualRolls) {
                 arrReturn[k+1] = arrReturnTemp[k];
             }
         }
+        arrReturn[0] = parseInt(arrReturn[0], 10) + parseInt(intAddToTotal, 10);
         
         return arrReturn;
     };

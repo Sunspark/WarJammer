@@ -1,0 +1,29 @@
+<html>
+	<head>
+		<title>treasure</title>
+        <script type="text/javascript" src="js/dice_roller.js"></script>
+        <script type="text/javascript" src="js/treasure_generator.js"></script>
+	</head>
+	<body>
+		<div id="interface">
+			<input id="objective_checkbox" type="checkbox" />Objective room<br />
+			<button id="roll" onClick="buttonAction();">Roll Me</button>
+		</div>
+		<hr />
+		<div id="results"></div>
+		<script language="javascript">
+		<!--
+			var _treasure = new TreasureGenerator();
+
+function buttonAction() {
+	'use strict';
+
+	alert('infunction');
+	var strLoot = _treasure.generateLoot(objective_checkbox.checked);
+	
+	results.innerHTML = strLoot;
+}
+		-->
+		</script>
+	</body>
+</html>
