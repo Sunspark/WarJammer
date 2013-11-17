@@ -1,7 +1,5 @@
 /**
  * generates a random event from look-up location.
- * Requires DiceRoller to be loaded first.
- * Requires Monster to be loaded first.
  * 
  * Object EventGenerator
  * Public Properties
@@ -13,6 +11,8 @@
  * @return {void}
  * @throws Error If DiceRoller is not loaded.
  * @throws Error If Monster is not loaded.
+ * @throws Error If gobjMonsterTable is not loaded.
+ * @throws Error If gobjEventDb is not loaded.
  */
 function EventGenerator() {
     'use strict';
@@ -23,15 +23,14 @@ function EventGenerator() {
     if (typeof Monster === 'undefined') {
         throw new Error('EventGenerator requires Monster.');
     }
-    var _dice = new DiceRoller(),
-    _eventMap = {
-        '1':'your mum',
-        '2':"you're mum",
-        '3':'yore mum',
-        '4':'Cave-In',
-        '5':'Explosim',
-        '6':'Tell me secrets!'
+    if (typeof gobjMonsterTable === 'undefined') {
+        throw new Error('EventGenerator requires gobjMonsterTable.');
     }
+    if (typeof gobjEventDb === 'undefined') {
+        throw new Error('EventGenerator requires gobjEventDb.');
+    }
+    
+    var _dice = new DiceRoller()
     ;
     
     /**
@@ -163,7 +162,7 @@ function EventGenerator() {
             
             if (blnIsEvent) {
                 intDieRoll = parseInt(_dice.roll()[0], 10);
-                strEventText = _eventMap[intDieRoll];
+                strEventText = gobjEventDb[intDieRoll];
             } else {
                 strMobMapText = rollForMobs(intDungeonLevel);
                 strEventText = deriveMonsters(strMobMapText)[0];
