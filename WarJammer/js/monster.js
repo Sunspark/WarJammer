@@ -23,8 +23,8 @@
  *      generateEvent(boolean) {return string} Takes boolean of whether this is a treasure room or not. Returns a string representing the event.
  * 
  * @param
- * @return {void}
- * @throws Error If DiceRoller is not loaded.
+ * @return {void} 
+ * @throws Error If the monster database is not loaded.
  */
 function Monster(intMonsterId) {
     'use strict';
@@ -56,7 +56,8 @@ function Monster(intMonsterId) {
         }
     };
     
-    
+    if (typeof gobjMonsterDb === 'undefined') {
+        throw new Error('Monster() needs the monster db global object to be defined.');
+    }
     init(gobjMonsterDb[intMonsterId]);
-    return this;
 }
