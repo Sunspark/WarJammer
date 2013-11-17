@@ -1,0 +1,49 @@
+<html>
+	<head>
+		<title>event generator test</title>
+        <script type="text/javascript" src="js/monster_db.js"></script>
+        <script type="text/javascript" src="js/monster.js"></script>
+        <script type="text/javascript" src="js/dice_roller.js"></script>
+        <script type="text/javascript" src="js/event_generator.js"></script>
+	</head>
+	<body>
+		<div id="interface">
+            <select id="dungeon_level">
+                <option value="1" selected="selected">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+            </select>
+			<input id="objective_checkbox" type="checkbox" />Objective room<br />
+			<button id="roll" onClick="buttonAction();">Roll Me</button>
+		</div>
+		<hr />
+        <div id="results"></div>
+        <script language="javascript">
+        <!--
+        
+
+        
+        
+        -->
+        </script>
+		<script language="javascript">
+		<!--
+			var _event = new EventGenerator();
+
+        
+		var fish = {'1':{'name':'charlie','type':'angel'}}
+		//alert(fish[1]['name']);
+function buttonAction() {
+	'use strict';
+
+	
+	
+	//alert('infunction');
+	var strEvent = _event.generateEvent(dungeon_level.value, objective_checkbox.checked);
+	
+	results.innerHTML = strEvent;
+}
+		-->
+		</script>
+	</body>
+</html>

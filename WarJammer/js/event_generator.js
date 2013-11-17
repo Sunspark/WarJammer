@@ -104,8 +104,10 @@ function EventGenerator() {
         intDieRoll = parseInt(_dice.roll()[0], 10);
         strMobMapText = gobjMonsterTable[intDungeonLevel][intDieRoll];
         if (strMobMapText === 'UP1') {
-            strMobMapText = rollForMobs(intDungeonLevel + 1);
+            console.log('Oh noes!! When rolling at level ' + intDungeonLevel + ' you increased the roll level!');
+            strMobMapText = rollForMobs(parseInt(intDungeonLevel, 10) + 1);
         } else if (strMobMapText === '2AGAIN') {
+            console.log('Oh noes!! When rolling at level ' + intDungeonLevel + ' you had to take 2 rolls!');
             strMobMapText = rollForMobs(intDungeonLevel);
             strMobMapText = strMobMapText + '|' + rollForMobs(intDungeonLevel);
         }
@@ -116,10 +118,11 @@ function EventGenerator() {
      * Generates an event (simulating drawing from the event deck).
      * If this is an objective room, there is not an event, just monsters.
      * 
+     * @param {integer} intDungeonLevel - the level of the dungeon being played
      * @param {boolean} blnObjectiveRoom - whether this is an objective room or not.
      * @return {string} the derived event text
      */
-    this.generateEvent = function(blnObjectiveRoom) {
+    this.generateEvent = function(intDungeonLevel, blnObjectiveRoom) {
         
         // is it objective room?
         // is it an event or a mob?
@@ -147,21 +150,22 @@ function EventGenerator() {
         
         if (blnObjectiveRoom) {
             // objective room is just roll twice on the mob table
-            strMobMapText = rollForMobs(1) + '|' + rollForMobs(1);
+            strMobMapText = rollForMobs(intDungeonLevel) + '|' + rollForMobs(intDungeonLevel);
             strEventText = deriveMonsters(strMobMapText)[0];
         } else {
             // roll for event
             // oh, you fuckers, GW - there are 7 Events, and 12 Monsters.
             // so can't just do 3+!
-            intDieRoll = _dice.roll('1d19');
+            intDieRoll = parseInt(_dice.roll('1d19')[0], 10);
             if (intDieRoll <= 7) {
                 blnIsEvent = true;
             }
             
             if (blnIsEvent) {
+                intDieRoll = parseInt(_dice.roll()[0], 10);
                 strEventText = _eventMap[intDieRoll];
             } else {
-                strMobMapText = rollForMobs(1);
+                strMobMapText = rollForMobs(intDungeonLevel);
                 strEventText = deriveMonsters(strMobMapText)[0];
             }
         }
