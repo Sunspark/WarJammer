@@ -1,4 +1,5 @@
-var gobjMonsterDb = {
+var
+gobjMonsterDb = {
     '1':{
         'nameSingular':'snotling',
         'namePlural':'snotlings',
@@ -142,5 +143,48 @@ var gobjMonsterDb = {
         'ac':4,
         'd':3,
         'specialRules':'Magic Ambush A; Fly; Necromantic Magic 2; Magic Resistance 5; Magic Item; Magic Weapon; Vampire'
+    },
+    '10':{
+        'nameSingular':'Ogre',
+        'namePlural':'Ogres',
+        'm':6,
+        'ws':3,
+        'bs':5,
+        's':4,
+        't':5,
+        'w':13,
+        'i':3,
+        'a':2,
+        'g':400,
+        'ac':0,
+        'd':1,
+        'specialRules':'Fear 5; Massive Damage 5+2'
     }
-};
+},
+gobjMonsterTable = {
+    '1':{
+        '1':'2d6x1',
+        '2':'1d1x2',
+        '3':'1d6x3',
+        '4':'1d3x3|1d6x4',
+        '5':'1d6x5',
+        '6':'UP1'
+    },
+    '2':{
+        '1':'1d2x7|2d6+5x3',
+        '2':'1d1x8',
+        '3':'1d6x9',
+        '4':'1d6x3|2d6x9',
+        '5':'27d1x5',
+        '6':'UP1'
+    },
+    '3':{
+        '1':'2AGAIN',
+        '2':'2AGAIN',
+        '3':'3d1x10',
+        '4':'4d1x10',
+        '5':'5d1x10',
+        '6':'6d1x10'
+    }
+}
+;

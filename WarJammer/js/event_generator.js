@@ -24,24 +24,6 @@ function EventGenerator() {
         throw new Error('EventGenerator requires Monster.');
     }
     var _dice = new DiceRoller(),
-    _mobMap = {
-        '1':'2d6x1',
-        '2':'1d1x2',
-        '3':'1d6x3',
-        '4':'1d3x3|1d6x4',
-        '5':'1d6x5',
-        '6':'1d6x6',
-        '7':'2AGAIN',
-        '8':'1AGAIN|1UP1|1UP2'
-    },
-    _objectiveMobMap = {
-        '1':'1d2x7|2d6+5x3',
-        '2':'1d1x8',
-        '3':'1d6x9',
-        '4':'1d6x3|2d6x9',
-        '5':'27d1x5',
-        '6':'1d6x6'
-    },
     _eventMap = {
         '1':'your mum',
         '2':"you're mum",
@@ -107,6 +89,28 @@ function EventGenerator() {
        
         return arrMonsters;
     }
+    /**
+     * recursively calls itself to look up mob events from the mob event table
+     *
+     * @param {integer} intDungeonLevel - the level of the dungeon
+     * @return {string} the mob event codes for the final rolled event, suitable for deriveMonsters()
+     */
+    function rollForMobs(intDungeonLevel) {
+        var
+            intDieRoll = 0,
+            strMobMapText = ''
+            ;
+
+        intDieRoll = parseInt(_dice.roll()[0], 10);
+        strMobMapText = gobjMonsterTable[intDungeonLevel][intDieRoll];
+        if (strMobMapText === 'UP1') {
+            strMobMapText = rollForMobs(intDungeonLevel + 1);
+        } else if (strMobMapText === '2AGAIN') {
+            strMobMapText = rollForMobs(intDungeonLevel);
+            strMobMapText = strMobMapText + '|' + rollForMobs(intDungeonLevel);
+        }
+        return strMobMapText;
+    }
     
     /**
      * Generates an event (simulating drawing from the event deck).
@@ -137,25 +141,29 @@ function EventGenerator() {
         //alert('looting ' + String(blnObjectiveRoom));
         var intDieRoll = 0,
             blnIsEvent = false,
-            strEventText = ''
+            strEventText = '',
+            strMobMapText = ''
             ;
         
-        // roll for event
-        // oh, you fuckers, GW - there are 7 Events, and 12 Monsters.
-        // so can't just do 3+!
-        intDieRoll = _dice.roll('1d19');
-        if (intDieRoll <= 7) {
-            blnIsEvent = true;
-        }
-        
-        // roll again for what mob
-        intDieRoll = _dice.roll();
         if (blnObjectiveRoom) {
-            strEventText = deriveMonsters(_objectiveMobMap[intDieRoll])[0];
-        } else if (blnIsEvent) {
-            strEventText = _eventMap[intDieRoll];
+            // objective room is just roll twice on the mob table
+            strMobMapText = rollForMobs(1) + '|' + rollForMobs(1);
+            strEventText = deriveMonsters(strMobMapText)[0];
         } else {
-            strEventText = deriveMonsters(_mobMap[intDieRoll])[0];
+            // roll for event
+            // oh, you fuckers, GW - there are 7 Events, and 12 Monsters.
+            // so can't just do 3+!
+            intDieRoll = _dice.roll('1d19');
+            if (intDieRoll <= 7) {
+                blnIsEvent = true;
+            }
+            
+            if (blnIsEvent) {
+                strEventText = _eventMap[intDieRoll];
+            } else {
+                strMobMapText = rollForMobs(1);
+                strEventText = deriveMonsters(strMobMapText)[0];
+            }
         }
         
         return strEventText;
