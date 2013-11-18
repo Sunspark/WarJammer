@@ -157,7 +157,8 @@ function EventGenerator() {
             strEventType = 'MONSTERS';
             // objective room is just roll twice on the mob table
             strMobMapText = rollForMobs(intDungeonLevel) + '|' + rollForMobs(intDungeonLevel);
-            strEventText = deriveMonsters(strMobMapText)[0];
+            arrMonsters = deriveMonsters(strMobMapText);
+            strEventText = arrMonsters.shift();
         } else {
             // roll for event
             // oh, you fuckers, GW - there are 7 Events, and 12 Monsters.
