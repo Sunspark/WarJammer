@@ -90,6 +90,8 @@ function EventGenerator() {
     }
     /**
      * recursively calls itself to look up mob events from the mob event table
+     * 
+     * TODO: What about split entry mobs??
      *
      * @param {integer} intDungeonLevel - the level of the dungeon
      * @return {string} the mob event codes for the final rolled event, suitable for deriveMonsters()
@@ -116,18 +118,21 @@ function EventGenerator() {
     /**
      * Generates an event (simulating drawing from the event deck).
      * If this is an objective room, there is not an event, just monsters.
+     * returned object has:
+     * {
+     *      'eventType': {string} - 'NMEVENT' or 'MONSTERS'
+     *      'eventDescription': {string} - For NMEvents, the full text; for monsters, a summary of the monsters rolled
+     *      'monsters': {array} - an array of monster objects
+     * }
      * 
      * @param {integer} intDungeonLevel - the level of the dungeon being played
      * @param {boolean} blnObjectiveRoom - whether this is an objective room or not.
-     * @return {string} the derived event text
+     * @return {object} an object representing the event
      */
     this.generateEvent = function(intDungeonLevel, blnObjectiveRoom) {
         
-        // is it objective room?
-        // is it an event or a mob?
-        // roll for thing
-        // if event, does it have a chaser?
-        // does it have treasure?
+        // if event, does it have a chaser? - doesn't matter, a human can push the button again
+        // does it have treasure? - no, NMevents don't give treasure
         // display mob bar
         // display mob count - cash and number ?HP delivered?
         // initialise counter
@@ -135,8 +140,7 @@ function EventGenerator() {
         // ?loot pool?
         // use event deck/ use rp book
         // roll on use items?
-        // roll for events?
-        // roll for draw agian?
+        // roll for events? - humans can roll to resolve them
         
         
         
@@ -144,10 +148,13 @@ function EventGenerator() {
         var intDieRoll = 0,
             blnIsEvent = false,
             strEventText = '',
-            strMobMapText = ''
+            strMobMapText = '',
+            strEventType = '',
+            arrMonsters = []
             ;
         
         if (blnObjectiveRoom) {
+            strEventType = 'MONSTERS';
             // objective room is just roll twice on the mob table
             strMobMapText = rollForMobs(intDungeonLevel) + '|' + rollForMobs(intDungeonLevel);
             strEventText = deriveMonsters(strMobMapText)[0];
@@ -161,15 +168,22 @@ function EventGenerator() {
             }
             
             if (blnIsEvent) {
+                strEventType = 'NMEVENT';
                 intDieRoll = parseInt(_dice.roll()[0], 10);
                 strEventText = gobjEventDb[intDieRoll];
             } else {
+                strEventType = 'MONSTERS';
                 strMobMapText = rollForMobs(intDungeonLevel);
-                strEventText = deriveMonsters(strMobMapText)[0];
+                arrMonsters = deriveMonsters(strMobMapText);
+                strEventText = arrMonsters.shift();
             }
         }
         
-        return strEventText;
+        return {
+            'eventType': strEventType,
+            'eventDescription': strEventText,
+            'monsters': arrMonsters
+        };
     };
 
 }

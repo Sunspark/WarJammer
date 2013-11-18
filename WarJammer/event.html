@@ -23,7 +23,7 @@
         <!--
         
 
-        
+        // need to add handling for not present warriors
         
         -->
         </script>
@@ -40,9 +40,11 @@ function buttonAction() {
 	
 	
 	//alert('infunction');
-	var strEvent = _event.generateEvent(dungeon_level.value, objective_checkbox.checked);
+	var objEvent = _event.generateEvent(dungeon_level.value, objective_checkbox.checked);
 	
-	results.innerHTML = strEvent;
+	console.log(objEvent);
+	
+	results.innerHTML = objEvent.eventDescription;
 }
 		-->
 		</script>
