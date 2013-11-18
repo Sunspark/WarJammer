@@ -100,12 +100,12 @@ function generateMonsterEntryTable(intMonsterId) {
     // stat titles row
     strMonsterTable = strMonsterTable + '<tr>';
     strMonsterTable = strMonsterTable + '<th>' + objThisMonster.nameSingular + '</th>';
-    strMonsterTable = strMonsterTable + '<td>Move</td>';
+    strMonsterTable = strMonsterTable + '<td>Mov</td>';
     strMonsterTable = strMonsterTable + '<td>WS</td>';
     strMonsterTable = strMonsterTable + '<td>BS</td>';
     strMonsterTable = strMonsterTable + '<td>Str</td>';
     strMonsterTable = strMonsterTable + '<td>Tuf</td>';
-    strMonsterTable = strMonsterTable + '<td>I</td>';
+    strMonsterTable = strMonsterTable + '<td>Int</td>';
     strMonsterTable = strMonsterTable + '<td>Att</td>';
     strMonsterTable = strMonsterTable + '<td>Armour</td>';
     strMonsterTable = strMonsterTable + '<td>Damage</td>';
@@ -115,7 +115,7 @@ function generateMonsterEntryTable(intMonsterId) {
 
     // mob values row
     strMonsterTable = strMonsterTable + '<tr>';
-    strMonsterTable = strMonsterTable + '<td>' + objThisMonster.currentHits + '/' + objThisMonster.startingHits + '</td>';
+    strMonsterTable = strMonsterTable + '<td><span id="monsterHits' + intMonsterId + '">' + objThisMonster.currentHits + '</span>/' + objThisMonster.startingHits + '</td>';
     strMonsterTable = strMonsterTable + '<td>' + objThisMonster.moveRate + '</td>';
     strMonsterTable = strMonsterTable + '<td>' + objThisMonster.weaponSkill + '</td>';
     strMonsterTable = strMonsterTable + '<td>' + objThisMonster.ballisticSkill + '</td>';
@@ -159,13 +159,51 @@ function generateMonsterEntryTable(intMonsterId) {
     strMonsterTable = strMonsterTable + '<td>' + gobjToHitTable[objThisMonster.weaponSkill][8] + '</td>';
     strMonsterTable = strMonsterTable + '<td>' + gobjToHitTable[objThisMonster.weaponSkill][9] + '</td>';
     strMonsterTable = strMonsterTable + '<td>' + gobjToHitTable[objThisMonster.weaponSkill][10] + '</td>';
-    strMonsterTable = strMonsterTable + '<td>&nbsp;</td>';
+    strMonsterTable = strMonsterTable + '<td><span id="hurtBlock' + intMonsterId +'"><input id="hurtBox' + intMonsterId +'" type="text" maxlength="2" size="2" /><button id="hurtButton-' + intMonsterId + '" onClick="hurtMonster(this.id);">Hurt Me</button></span></td>';
     strMonsterTable = strMonsterTable + '</tr>';
     
     strMonsterTable = strMonsterTable + '</table>';
     
     return strMonsterTable;
 }
+ 
+function hurtMonster(strButtonId) {
+    console.log(strButtonId);
+    var
+	    strMonsterId = '',
+	    intMonsterId = 0,
+        strHurtBoxId = '',
+        strHurtBoxContents = '',
+        intHurtPoints = 0,
+        strMonsterHitDisplayId = '',
+        strHurtBlockId = ''
+        ;
+    strMonsterId = String(strButtonId).split(/\-/)[1];
+    strHurtBoxId = 'hurtBox' + strMonsterId;
+    strHurtBoxContents = document.getElementById(strHurtBoxId).value;
+    
+    if (strHurtBoxContents.match(/^\d{1,2}$/) !== null) {
+        // hurting the monster.
+        // alert('ow!');
+        intMonsterId = parseInt(strMonsterId, 10);
+        intHurtPoints = parseInt(strHurtBoxContents, 10);
+        _event.monsters[intMonsterId].takeDamage(intHurtPoints);
+        strMonsterHitDisplayId = 'monsterHits' + intMonsterId;
+        document.getElementById(strMonsterHitDisplayId).innerHTML = _event.monsters[intMonsterId].currentHits;
+
+        if (_event.monsters[intMonsterId].currentHits === 0) {
+            strHurtBlockId = 'hurtBlock' + intMonsterId;
+            document.getElementById(strHurtBlockId).style.display = 'none';
+        }
+    } else {
+        // who's the real monster?
+        alert('The amount of HP to deal to the monster must be one or two digits');
+    }
+           
+    
+    
+}
+ 
 		-->
 		</script>
 	</body>
