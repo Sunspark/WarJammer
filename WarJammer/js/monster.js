@@ -19,8 +19,10 @@
  *     goldValue
  *     damage - integer, number of d6 the monster deals
  *     specialRules - semicolon delimited list
+ *     killedBy - string representing the killer, for loots
  * Public Methods
- *      generateEvent(boolean) {return string} Takes boolean of whether this is a treasure room or not. Returns a string representing the event.
+ *     takeDamage(intNumberOfHits) removes HP from the monster
+ *     isDead() {return boolean} True if dead
  * 
  * @param
  * @return {void} 
@@ -47,13 +49,33 @@ function Monster(intMonsterId) {
         _that.goldValue = objMonsterDbEntry.g;
         _that.damage = objMonsterDbEntry.d;
         _that.specialRules = objMonsterDbEntry.specialRules;
+        _that.killedBy = '';
     }
     
+    /**
+     * hurts the monster
+     *
+     * @param {integer} intNumberOfHits - the number of HP to be removed
+     */
     this.takeDamage = function(intNumberOfHits) {
         _that.currentHits = _that.currentHits - intNumberOfHits;
         if (_that.currentHits < 0) {
             _that.currentHits = 0;
         }
+    };
+    
+    /**
+     * getter function for whether the monster is dead
+     *
+     * @return {boolean} True if dead
+     */
+    this.isDead = function() {
+        var blnIsDead = false;
+        if (_that.currentHits === 0) {
+            blnIsDead = true;
+        }
+        
+        return blnIsDead;
     };
     
     if (typeof gobjMonsterDb === 'undefined') {
