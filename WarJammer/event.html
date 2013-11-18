@@ -105,29 +105,27 @@ function generateMonsterEntryTable(intMonsterId) {
     strMonsterTable = strMonsterTable + '<td>BS</td>';
     strMonsterTable = strMonsterTable + '<td>Str</td>';
     strMonsterTable = strMonsterTable + '<td>Tuf</td>';
-    strMonsterTable = strMonsterTable + '<td>Wounds</td>';
     strMonsterTable = strMonsterTable + '<td>I</td>';
     strMonsterTable = strMonsterTable + '<td>Att</td>';
-    strMonsterTable = strMonsterTable + '<td>Gold</td>';
     strMonsterTable = strMonsterTable + '<td>Armour</td>';
     strMonsterTable = strMonsterTable + '<td>Damage</td>';
+    strMonsterTable = strMonsterTable + '<td>Gold</td>';
     strMonsterTable = strMonsterTable + '<td>Special</td>';
     strMonsterTable = strMonsterTable + '</tr>';
 
     // mob values row
     strMonsterTable = strMonsterTable + '<tr>';
-    strMonsterTable = strMonsterTable + '<th>&nbsp;</th>';
+    strMonsterTable = strMonsterTable + '<td>' + objThisMonster.currentHits + '/' + objThisMonster.startingHits + '</td>';
     strMonsterTable = strMonsterTable + '<td>' + objThisMonster.moveRate + '</td>';
     strMonsterTable = strMonsterTable + '<td>' + objThisMonster.weaponSkill + '</td>';
     strMonsterTable = strMonsterTable + '<td>' + objThisMonster.ballisticSkill + '</td>';
     strMonsterTable = strMonsterTable + '<td>' + objThisMonster.strength + '</td>';
     strMonsterTable = strMonsterTable + '<td>' + objThisMonster.toughness + '</td>';
-    strMonsterTable = strMonsterTable + '<td>' + objThisMonster.currentHits + '/' + objThisMonster.startingHits + '</td>';
     strMonsterTable = strMonsterTable + '<td>' + objThisMonster.initiative + '</td>';
     strMonsterTable = strMonsterTable + '<td>' + objThisMonster.attacks + '</td>';
-    strMonsterTable = strMonsterTable + '<td>' + objThisMonster.goldValue + '</td>';
     strMonsterTable = strMonsterTable + '<td>' + objThisMonster.armour + '</td>';
     strMonsterTable = strMonsterTable + '<td>' + objThisMonster.damage + 'd6</td>';
+    strMonsterTable = strMonsterTable + '<td>' + objThisMonster.goldValue + '</td>';
     strMonsterTable = strMonsterTable + '<td>' + objThisMonster.specialRules + '</td>';
     strMonsterTable = strMonsterTable + '</tr>';
 
@@ -144,7 +142,7 @@ function generateMonsterEntryTable(intMonsterId) {
     strMonsterTable = strMonsterTable + '<td>8</td>';
     strMonsterTable = strMonsterTable + '<td>9</td>';
     strMonsterTable = strMonsterTable + '<td>10</td>';
-    strMonsterTable = strMonsterTable + '<td colspan="2">&nbsp;</td>';
+    strMonsterTable = strMonsterTable + '<td>&nbsp;</td>';
     strMonsterTable = strMonsterTable + '</tr>';
     
     // to hit score row
@@ -161,7 +159,7 @@ function generateMonsterEntryTable(intMonsterId) {
     strMonsterTable = strMonsterTable + '<td>' + gobjToHitTable[objThisMonster.weaponSkill][8] + '</td>';
     strMonsterTable = strMonsterTable + '<td>' + gobjToHitTable[objThisMonster.weaponSkill][9] + '</td>';
     strMonsterTable = strMonsterTable + '<td>' + gobjToHitTable[objThisMonster.weaponSkill][10] + '</td>';
-    strMonsterTable = strMonsterTable + '<td colspan="2">&nbsp;</td>';
+    strMonsterTable = strMonsterTable + '<td>&nbsp;</td>';
     strMonsterTable = strMonsterTable + '</tr>';
     
     strMonsterTable = strMonsterTable + '</table>';
