@@ -169,9 +169,9 @@ function EventGenerator() {
             }
             
             if (blnIsEvent) {
-                strEventType = 'NMEVENT';
-                intDieRoll = parseInt(_dice.roll()[0], 10);
-                strEventText = gobjEventDb[intDieRoll];
+                intDieRoll = parseInt(_dice.roll('1dSIXSIX')[0], 10);
+                strEventType = gobjEventDb[intDieRoll].name;
+                strEventText = gobjEventDb[intDieRoll].text;
             } else {
                 strEventType = 'MONSTERS';
                 strMobMapText = rollForMobs(intDungeonLevel);
