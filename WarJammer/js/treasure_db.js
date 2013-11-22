@@ -507,6 +507,8 @@ gobjTreasureArms = {
         }
     }
 }
+,gobjTreasureItems = gobjTreasureArms,
+gobjTreasureObjective = gobjTreasureArms
 /*,
 gobjTreasureItems = {
     '11': {
@@ -942,7 +944,7 @@ gobjTreasureItems = {
         }
     }
 },
-gobjObjectiveTreasure = {
+gobjTreasureObjective = {
     '11': {
         'name':'',
         'fluff':'',

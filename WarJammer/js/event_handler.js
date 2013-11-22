@@ -207,7 +207,8 @@ function generateLoot() {
         intWizardGold = 0,
         i = 0,
         strFinalLoot = '',
-        strRoomLoot = '',
+        arrGeneratedLoot = [],
+        arrDivElements = [],
         j = 0,
         treasureGenerator = new TreasureGenerator()
         ;
@@ -232,20 +233,55 @@ function generateLoot() {
         }
     }
     
-    strFinalLoot = strFinalLoot + 'Barbarian gets ' + intBarbarianGold + 'gp<br />';
-    strFinalLoot = strFinalLoot + 'Dwarf gets ' + intDwarfGold + 'gp<br />';
-    strFinalLoot = strFinalLoot + 'Elf gets ' + intElfGold + 'gp<br />';
-    strFinalLoot = strFinalLoot + 'Wizard gets ' + intWizardGold + 'gp<br />';
+    arrDivElements.push('<div id="personal_loot">');
+    arrDivElements.push('Barbarian gets ' + intBarbarianGold + 'gp<br />');
+    arrDivElements.push('Dwarf gets ' + intDwarfGold + 'gp<br />');
+    arrDivElements.push('Elf gets ' + intElfGold + 'gp<br />');
+    arrDivElements.push('Wizard gets ' + intWizardGold + 'gp');
+    arrDivElements.push('</div>');
     
+    // now sort out treasure items!!
     if (objective_checkbox.checked === true) {
         // objective room - roll 4 times! (makes the hardcoded assumption of 4 survivors)
         for (j = 0; j < 4; j = j + 1) {
-            strRoomLoot = strRoomLoot + treasureGenerator.generateLoot(objective_checkbox.checked) + '; ';
+            arrGeneratedLoot.push(treasureGenerator.generateLoot(objective_checkbox.checked));
         }
     } else {
-        strRoomLoot = treasureGenerator.generateLoot(objective_checkbox.checked);
+        arrGeneratedLoot.push(treasureGenerator.generateLoot(objective_checkbox.checked));
     }
-    strFinalLoot = strFinalLoot + 'The party gets ' + strRoomLoot;
+    
+    // turn the array of loot objects into a display
+    arrDivElements.push('<div id="party_loot">');
+    
+    for (i = 0; i < arrGeneratedLoot.length; i = i + 1) {
+        arrDivElements.push('<div id="loot_item' + i + '" class="loot_item">');
+
+        arrDivElements.push('<h3 class="loot_name">' + arrGeneratedLoot[i].name + '</h3>');
+        arrDivElements.push('<p class="loot_fluff">' + arrGeneratedLoot[i].fluff + '</p>');
+        arrDivElements.push('<p class="loot_desc">' + arrGeneratedLoot[i].longDescription + '</p>');
+        arrDivElements.push('<p class="loot_value">Usable by: ');
+        if (arrGeneratedLoot[i].usableBy.B === true) {
+            arrDivElements.push('<span class="buse_true">B</span>');
+        }
+        if (arrGeneratedLoot[i].usableBy.D === true) {
+            arrDivElements.push('<span class="duse_true">D</span>');
+        }
+        if (arrGeneratedLoot[i].usableBy.E === true) {
+            arrDivElements.push('<span class="euse_true">E</span>');
+        }
+        if (arrGeneratedLoot[i].usableBy.W === true) {
+            arrDivElements.push('<span class="wuse_true">W</span>');
+        }
+
+        arrDivElements.push(', Gold Value: ' + arrGeneratedLoot[i].goldValue + '</p>');
+
+        arrDivElements.push('</div>');
+    }
+
+    arrDivElements.push('</div>');
+    strFinalLoot = arrDivElements.join('');
+
+    //$targetDiv.append(strDivHtml);
     
     results.innerHTML = strFinalLoot;
 }
