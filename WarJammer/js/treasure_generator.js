@@ -35,27 +35,7 @@ function TreasureGenerator() {
         throw new Error('TreasureGenerator requires gobjTreasureObjective.');
     }
     
-    var
-    _dice = new DiceRoller(),
-    _treasureMap = {
-        '1':'some copper',
-        '2':'a rusty dagger',
-        '3':'Gremlin Sphere',
-        '4':'+8 Vorpal Flangeblade',
-        '5':'Goblin snot',
-        '6':'the sixth item...',
-        '66':'need another 6'
-    },
-    _treasureMapObjective = {
-        '1':'Oyour mum',
-        '2':"Oyou're mum",
-        '3':'Oyore mum',
-        '4':'O+8 Vorpal Flangeblade',
-        '5':'OGoblin snot',
-        '6':'Othe sixth item...',
-        '66':'Oneed another 6'
-    }
-    ;
+    var _dice = new DiceRoller();
 
     /**
      * generates a random item of loot from look-up location.
