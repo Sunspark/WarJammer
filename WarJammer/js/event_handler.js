@@ -13,7 +13,8 @@ function generateMonsterEntryTable(intMonsterId) {
         objThisMonster = gobjThisEvent.monsters[intMonsterId]
     ;
 
-    strMonsterTable = strMonsterTable + '<table id="hurtBlock' + intMonsterId +'">';
+    strMonsterTable = strMonsterTable + '<div id="hurtBlock' + intMonsterId +'">';
+    strMonsterTable = strMonsterTable + '<table>';
     
     // stat titles row
     strMonsterTable = strMonsterTable + '<tr>';
@@ -85,6 +86,7 @@ function generateMonsterEntryTable(intMonsterId) {
     strMonsterTable = strMonsterTable + '</tr>';
     
     strMonsterTable = strMonsterTable + '</table>';
+    strMonsterTable = strMonsterTable + '</div>';
     
     return strMonsterTable;
 }
@@ -101,11 +103,11 @@ function generateMonsterTable() {
         i = 0
     ;
 
-    strMonsterTable = strMonsterTable + '<table>';
+    strMonsterTable = strMonsterTable + '<div id="monsters_div">';
     for (i = 0; i < gobjThisEvent.monsters.length; i = i + 1) {
-        strMonsterTable = strMonsterTable + '<tr><td>' + generateMonsterEntryTable(i) + '</td></tr>';
+        strMonsterTable = strMonsterTable + generateMonsterEntryTable(i);
     }
-    strMonsterTable = strMonsterTable + '</table>';
+    strMonsterTable = strMonsterTable + '</div>';
     
     return strMonsterTable;
 }
@@ -119,13 +121,13 @@ function populateEventTable() {
     // check for presence of _event
     var strEventTable = '';
     
-    strEventTable = strEventTable + '<table>';
-    strEventTable = strEventTable + '<tr><td>' + gobjThisEvent.eventType + '</td></tr>';
-    strEventTable = strEventTable + '<tr><td>' + gobjThisEvent.eventDescription + '</td></tr>';
+    strEventTable = strEventTable + '<div id="event_div">';
+    strEventTable = strEventTable + '<h2>' + gobjThisEvent.eventType + '</h2>';
+    strEventTable = strEventTable + '<p>' + gobjThisEvent.eventDescription + '</p>';
     if (gobjThisEvent.eventType === 'MONSTERS') {
-        strEventTable = strEventTable + '<tr><td>' + generateMonsterTable() + '</td></tr>';
+        strEventTable = strEventTable + generateMonsterTable();
     }
-    strEventTable = strEventTable + '</table>';
+    strEventTable = strEventTable + '</div>';
     results.innerHTML = strEventTable;
 }
 
@@ -178,9 +180,10 @@ function hurtMonster(strButtonId) {
         document.getElementById(strMonsterHitDisplayId).innerHTML = gobjThisEvent.monsters[intMonsterId].currentHits;
 
         if (gobjThisEvent.monsters[intMonsterId].isDead() === true) {
-            alert('You killed a monster, the other monsters move up!');
+            //alert('You killed a monster, the other monsters move up!');
             strHurtBlockId = 'hurtBlock' + intMonsterId;
-            document.getElementById(strHurtBlockId).style.display = 'none';
+            $('#' + strHurtBlockId).slideUp();
+            //document.getElementById(strHurtBlockId).style.display = 'none';
             gobjThisEvent.monsters[intMonsterId].killedBy = strHurtByContents;
         }
     } else {
